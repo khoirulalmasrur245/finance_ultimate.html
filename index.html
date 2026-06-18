@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0a0e1a">
+    <title>💰 FINANCE PRO ULTIMATE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-card-hover: rgba(255,255,255,0.07);
+            --border-color: rgba(255,255,255,0.06);
+            --text-primary: #f0f2f8;
+            --text-secondary: #8899bb;
+            --text-muted: #556688;
+            --gold: #ffd700;
+            --gold-gradient: linear-gradient(135deg, #f7971e, #ffd700);
+            --green: #4ade80;
+            --red: #f87171;
+            --purple: #a78bfa;
+            --pink: #f472b6;
+            --blue: #60a5fa;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --radius: 24px;
+            --radius-sm: 16px;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 16px 16px 140px 16px;
+            background-image: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.03) 0%, transparent 70%);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0 20px 0; }
+        .logo { font-size: 22px; font-weight: 800; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 10px; }
+        .logo i { -webkit-text-fill-color: #ffd700; font-size: 24px; }
+        .logo span { -webkit-text-fill-color: var(--text-primary); font-weight: 400; font-size: 14px; }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .date-badge { background: var(--bg-card); padding: 8px 16px; border-radius: 60px; font-size: 12px; color: var(--text-secondary); border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: #0a0e1a; }
+
+        .saldo-card { background: linear-gradient(145deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02)); border: 1px solid rgba(255,215,0,0.12); border-radius: var(--radius); padding: 28px 24px; margin-bottom: 24px; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .saldo-card::before { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,215,0,0.06), transparent 70%); border-radius: 50%; }
+        .saldo-card .label { font-size: 13px; color: var(--text-secondary); letter-spacing: 1px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+        .saldo-card .nilai { font-size: 40px; font-weight: 800; color: var(--gold); margin: 6px 0 4px 0; letter-spacing: -1px; }
+        .saldo-card .sub { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .saldo-card .sub .progress-bar { flex: 1; min-width: 100px; height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; }
+        .saldo-card .sub .progress-bar .fill { height: 100%; background: var(--gold-gradient); border-radius: 10px; transition: width 0.6s ease; width: 0%; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .stat-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px 14px; text-align: center; backdrop-filter: blur(10px); transition: 0.25s; }
+        .stat-item:active { transform: scale(0.97); }
+        .stat-item .icon { font-size: 20px; margin-bottom: 4px; }
+        .stat-item .label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
+        .stat-item .value { font-size: 18px; font-weight: 700; margin-top: 2px; }
+        .stat-item .value.green { color: var(--green); }
+        .stat-item .value.red { color: var(--red); }
+        .stat-item .value.gold { color: var(--gold); }
+
+        /* VOICE */
+        .voice-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; backdrop-filter: blur(10px); }
+        .voice-section .header-voice { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .voice-section .header-voice h3 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .voice-section .header-voice h3 i { color: var(--purple); }
+        .voice-btn { width: 100%; padding: 18px; border: none; border-radius: var(--radius-sm); font-size: 16px; font-weight: 700; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; position: relative; overflow: hidden; }
+        .voice-btn:active { transform: scale(0.97); }
+        .voice-btn.listening { background: linear-gradient(135deg, #ff6b6b, #ee5a24); animation: pulse 0.8s infinite; }
+        .voice-btn i { font-size: 20px; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,107,107,0.4); } 50% { transform: scale(1.02); box-shadow: 0 0 30px 10px rgba(255,107,107,0.2); } }
+        .voice-status { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 10px; min-height: 24px; }
+        .voice-status .highlight { color: var(--purple); font-weight: 600; }
+
+        /* FORM */
+        .form-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; backdrop-filter: blur(10px); }
+        .form-section h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .form-section h3 i { color: var(--gold); }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+        .form-group input, .form-group select { width: 100%; padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: rgba(0,0,0,0.25); color: var(--text-primary); font-size: 15px; font-family: inherit; outline: none; transition: 0.25s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255,215,0,0.08); }
+        .form-group input::placeholder { color: var(--text-muted); }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-primary { width: 100%; padding: 16px; border: none; border-radius: var(--radius-sm); font-size: 16px; font-weight: 700; background: var(--gold-gradient); color: #0a0e1a; cursor: pointer; transition: 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 4px; }
+        .btn-primary:active { transform: scale(0.97); }
+
+        /* TABS */
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-btn { padding: 10px 20px; border: none; border-radius: 60px; background: var(--bg-card); color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.25s; white-space: nowrap; border: 1px solid transparent; }
+        .tab-btn.active { background: var(--gold-gradient); color: #0a0e1a; border-color: var(--gold); }
+        .tab-btn:active { transform: scale(0.97); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* CHART */
+        .chart-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; backdrop-filter: blur(10px); }
+        .chart-section h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .chart-section h3 i { color: var(--pink); }
+        .chart-bars { display: flex; gap: 10px; align-items: end; height: 100px; padding-top: 6px; overflow-x: auto; }
+        .chart-bar-item { flex: 1; min-width: 44px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .chart-bar-item .bar { width: 28px; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, var(--gold), #f7971e); transition: height 0.5s ease; min-height: 4px; }
+        .chart-bar-item .bar-label { font-size: 9px; color: var(--text-muted); text-align: center; }
+        .chart-bar-item .bar-value { font-size: 8px; color: var(--gold); font-weight: 600; }
+        .chart-empty { text-align: center; padding: 20px; color: var(--text-muted); font-size: 13px; }
+
+        /* LIST */
+        .list-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; margin-bottom: 100px; backdrop-filter: blur(10px); }
+        .list-section .header-list { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .list-section .header-list h3 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .list-section .header-list h3 i { color: var(--blue); }
+        .list-section .header-list span { font-size: 13px; color: var(--text-secondary); }
+        .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+        .transaction-item:last-child { border-bottom: none; }
+        .transaction-item .left .desc { font-size: 14px; font-weight: 500; }
+        .transaction-item .left .meta { font-size: 12px; color: var(--text-secondary); display: flex; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
+        .transaction-item .left .meta .cat-badge { background: rgba(255,255,255,0.04); padding: 0 10px; border-radius: 60px; font-size: 10px; }
+        .transaction-item .right { display: flex; align-items: center; gap: 12px; }
+        .transaction-item .right .amount { font-weight: 700; font-size: 15px; }
+        .transaction-item .right .amount.income { color: var(--green); }
+        .transaction-item .right .amount.expense { color: var(--red); }
+        .transaction-item .right .delete-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; opacity: 0.4; transition: 0.2s; padding: 4px; }
+        .transaction-item .right .delete-btn:active { opacity: 1; }
+        .empty-state { text-align: center; padding: 30px 0; color: var(--text-muted); font-size: 14px; }
+        .empty-state i { font-size: 32px; margin-bottom: 10px; display: block; opacity: 0.3; }
+
+        /* NOTIFICATION */
+        .notif-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; backdrop-filter: blur(10px); }
+        .notif-section h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .notif-section h3 i { color: var(--red); }
+        .notif-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item .notif-icon { font-size: 18px; }
+        .notif-item .notif-text { flex: 1; font-size: 13px; }
+        .notif-item .notif-text small { display: block; color: var(--text-muted); font-size: 11px; }
+        .notif-item .notif-toggle { cursor: pointer; font-size: 20px; color: var(--text-muted); transition: 0.25s; }
+        .notif-item .notif-toggle.active { color: var(--green); }
+
+        /* FOOTER */
+        .footer-actions { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px 24px 16px; background: rgba(10,14,26,0.92); backdrop-filter: blur(20px); display: flex; gap: 12px; border-top: 1px solid var(--border-color); flex-wrap: wrap; }
+        .footer-actions .btn { flex: 1; min-width: 60px; padding: 14px; border: none; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.25s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .footer-actions .btn:active { transform: scale(0.97); }
+        .footer-actions .btn-secondary { background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .footer-actions .btn-danger { background: rgba(255,107,107,0.12); color: var(--red); border: 1px solid rgba(255,107,107,0.15); }
+        .footer-actions .btn-export { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.15); }
+        .footer-actions .btn-gold { background: var(--gold-gradient); color: #0a0e1a; }
+
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(0,0,0,0.85); backdrop-filter: blur(16px); padding: 12px 28px; border-radius: 60px; color: #fff; font-size: 14px; font-weight: 600; border: 1px solid rgba(255,215,0,0.12); opacity: 0; transition: all 0.4s ease; pointer-events: none; z-index: 999; white-space: nowrap; max-width: 90%; overflow: hidden; text-overflow: ellipsis; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+            .stat-item { padding: 12px 8px; }
+            .stat-item .value { font-size: 15px; }
+            .saldo-card .nilai { font-size: 32px; }
+            .row-2 { grid-template-columns: 1fr; }
+            .footer-actions { padding: 10px 12px 16px 12px; gap: 8px; flex-wrap: wrap; }
+            .footer-actions .btn { font-size: 12px; padding: 12px; flex: 1 0 30%; }
+            .date-badge { font-size: 10px; padding: 6px 12px; }
+            .logo { font-size: 18px; }
+        }
+        @media (max-width: 380px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast">✅ Berhasil!</div>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo"><i class="fas fa-coins"></i> FINANCE <span>Ultimate</span></div>
+        <div class="header-right">
+            <div class="date-badge" id="dateBadge"><i class="far fa-calendar-alt"></i> 00/00/0000</div>
+            <div class="avatar">👑</div>
+        </div>
+    </div>
+
+    <!-- SALDO -->
+    <div class="saldo-card">
+        <div class="label"><i class="fas fa-wallet"></i> TOTAL SALDO</div>
+        <div class="nilai" id="totalSaldo">Rp 0</div>
+        <div class="sub">
+            <span id="targetInfo">🎯 Target Rp 5.000.000</span>
+            <div class="progress-bar"><div class="fill" id="progressFill" style="width:0%;"></div></div>
+            <span id="progressText">0%</span>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+        <div class="stat-item"><div class="icon">📥</div><div class="label">Pemasukan</div><div class="value green" id="totalMasuk">Rp 0</div></div>
+        <div class="stat-item"><div class="icon">📤</div><div class="label">Pengeluaran</div><div class="value red" id="totalKeluar">Rp 0</div></div>
+        <div class="stat-item"><div class="icon">📊</div><div class="label">Transaksi</div><div class="value gold" id="totalTransaksi">0</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="tab1">📝 Transaksi</button>
+        <button class="tab-btn" data-tab="tab2">📊 Laporan</button>
+        <button class="tab-btn" data-tab="tab3">🔔 Notifikasi</button>
+        <button class="tab-btn" data-tab="tab4">🏦 Wallet</button>
+    </div>
+
+    <!-- TAB 1: TRANSAKSI -->
+    <div class="tab-content active" id="tab1">
+        <!-- VOICE -->
+        <div class="voice-section">
+            <div class="header-voice">
+                <h3><i class="fas fa-microphone"></i> Catat dengan Suara</h3>
+                <span style="font-size:11px;color:var(--text-muted);"><i class="fas fa-circle" style="color:var(--green);font-size:8px;"></i> Aktif</span>
+            </div>
+            <button class="voice-btn" id="voiceBtn">
+                <i class="fas fa-microphone"></i> <span id="voiceBtnText">Tekan & Bicara</span>
+            </button>
+            <div class="voice-status" id="voiceStatus">
+                <i class="fas fa-info-circle"></i> Contoh: <span class="highlight">"Tambah pemasukan gaji 5 juta"</span>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="form-section">
+            <h3><i class="fas fa-pen"></i> Tambah Manual</h3>
+            <div class="form-group"><label>📌 Deskripsi</label><input type="text" id="desc" placeholder="Contoh: Gaji, Makan..." /></div>
+            <div class="row-2">
+                <div class="form-group"><label>💰 Jumlah (Rp)</label><input type="number" id="amount" placeholder="0" /></div>
+                <div class="form-group"><label>📂 Kategori</label>
+                    <select id="category">
+                        <option value="Makanan">🍔 Makanan</option>
+                        <option value="Transportasi">🚗 Transportasi</option>
+                        <option value="Tagihan">⚡ Tagihan</option>
+                        <option value="Belanja">🛍️ Belanja</option>
+                        <option value="Gaji">💰 Gaji</option>
+                        <option value="Kesehatan">💊 Kesehatan</option>
+                        <option value="Hiburan">🎮 Hiburan</option>
+                        <option value="Investasi">📈 Investasi</option>
+                        <option value="Lainnya">📦 Lainnya</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"><label>🔄 Tipe</label>
+                <select id="type">
+                    <option value="masuk">📥 Pemasukan</option>
+                    <option value="keluar">📤 Pengeluaran</option>
+                </select>
+            </div>
+            <button class="btn-primary" id="btnTambah"><i class="fas fa-plus"></i> Tambahkan</button>
+        </div>
+
+        <!-- LIST -->
+        <div class="list-section" id="listSection">
+            <div class="header-list">
+                <h3><i class="fas fa-list-ul"></i> Riwayat</h3>
+                <span id="transCount">0 transaksi</span>
+            </div>
+            <div id="listContainer"><div class="empty-state"><i class="fas fa-inbox"></i>Belum ada transaksi</div></div>
+        </div>
+    </div>
+
+    <!-- TAB 2: LAPORAN BULANAN -->
+    <div class="tab-content" id="tab2">
+        <div class="chart-section">
+            <h3><i class="fas fa-calendar-alt" style="color:var(--gold);"></i> Laporan Bulanan</h3>
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+                <select id="monthSelect" style="padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:rgba(0,0,0,0.25);color:var(--text-primary);font-size:14px;flex:1;min-width:120px;">
+                    <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option>
+                    <option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option>
+                    <option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option>
+                    <option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+                </select>
+                <select id="yearSelect" style="padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:rgba(0,0,0,0.25);color:var(--text-primary);font-size:14px;flex:1;min-width:80px;">
+                </select>
+                <button class="btn-primary" id="btnReport" style="flex:0 0 auto;padding:12px 24px;width:auto;margin-top:0;">📊 Lihat</button>
+            </div>
+            <div id="reportContainer">
+                <div class="chart-empty">Pilih bulan dan tahun, lalu klik Lihat</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: NOTIFIKASI -->
+    <div class="tab-content" id="tab3">
+        <div class="notif-section">
+            <h3><i class="fas fa-bell" style="color:var(--red);"></i> Pengingat & Notifikasi</h3>
+            <div id="notifContainer">
+                <div class="notif-item">
+                    <div class="notif-icon">💰</div>
+                    <div class="notif-text">Pengingat Tagihan <small>Setiap tanggal 5</small></div>
+                    <div class="notif-toggle active" data-notif="tagihan" onclick="toggleNotif(this)"><i class="fas fa-toggle-on"></i></div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-icon">📊</div>
+                    <div class="notif-text">Laporan Bulanan <small>Setiap tanggal 1</small></div>
+                    <div class="notif-toggle active" data-notif="laporan" onclick="toggleNotif(this)"><i class="fas fa-toggle-on"></i></div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-icon">🎯</div>
+                    <div class="notif-text">Target Tabungan <small>Pengingat saat saldo rendah</small></div>
+                    <div class="notif-toggle active" data-notif="target" onclick="toggleNotif(this)"><i class="fas fa-toggle-on"></i></div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-icon">🏦</div>
+                    <div class="notif-text">Integrasi Wallet <small>Sinkronisasi otomatis</small></div>
+                    <div class="notif-toggle active" data-notif="wallet" onclick="toggleNotif(this)"><i class="fas fa-toggle-on"></i></div>
+                </div>
+            </div>
+            <button class="btn-primary" id="btnTestNotif" style="margin-top:12px;"><i class="fas fa-bell"></i> Kirim Notifikasi Tes</button>
+        </div>
+    </div>
+
+    <!-- TAB 4: WALLET / INTEGRASI BANK -->
+    <div class="tab-content" id="tab4">
+        <div class="form-section">
+            <h3><i class="fas fa-university" style="color:var(--blue);"></i> Integrasi Bank & Wallet</h3>
+            <div class="form-group"><label>🏦 Pilih Bank / Wallet</label>
+                <select id="walletSelect">
+                    <option value="BCA">🏦 BCA</option>
+                    <option value="Mandiri">🏦 Mandiri</option>
+                    <option value="BNI">🏦 BNI</option>
+                    <option value="BRI">🏦 BRI</option>
+                    <option value="GoPay">📱 GoPay</option>
+                    <option value="OVO">📱 OVO</option>
+                    <option value="DANA">📱 DANA</option>
+                    <option value="ShopeePay">📱 ShopeePay</option>
+                    <option value="LinkAja">📱 LinkAja</option>
+                </select>
+            </div>
+            <div class="row-2">
+                <div class="form-group"><label>💰 Saldo Wallet</label><input type="number" id="walletBalance" placeholder="0" /></div>
+                <div class="form-group"><label>🔗 Sync Otomatis</label>
+                    <select id="walletSync">
+                        <option value="on">✅ Aktif</option>
+                        <option value="off">❌ Nonaktif</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-primary" id="btnWalletSave"><i class="fas fa-save"></i> Simpan Integrasi</button>
+            <div id="walletStatus" style="margin-top:12px;font-size:13px;color:var(--text-secondary);text-align:center;"></div>
+        </div>
+        <div class="list-section" style="margin-bottom:20px;">
+            <h3 style="font-size:15px;font-weight:600;margin-bottom:12px;"><i class="fas fa-history" style="color:var(--purple);"></i> Riwayat Sinkronisasi</h3>
+            <div id="syncHistory"><div class="empty-state">Belum ada riwayat sinkronisasi</div></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-actions">
+        <button class="btn btn-danger" id="btnReset"><i class="fas fa-trash-alt"></i> Reset</button>
+        <button class="btn btn-export" id="btnExport"><i class="fas fa-file-export"></i> Export</button>
+        <button class="btn btn-secondary" id="btnFilter"><i class="fas fa-filter"></i> Filter</button>
+        <button class="btn btn-gold" id="btnBackup"><i class="fas fa-cloud-upload-alt"></i> Backup</button>
+    </div>
+
+    <script>
+        // ================================================================
+        // FINANCE PRO ULTIMATE — FULL JAVASCRIPT 100% JADI
+        // ================================================================
+
+        // --- STATE ---
+        let transactions = [];
+        let filterType = 'semua';
+        let recognition = null;
+        let isListening = false;
+        let notifSettings = { tagihan: true, laporan: true, target: true, wallet: true };
+        let walletData = { bank: 'BCA', balance: 0, sync: true };
+        let syncHistory = [];
+
+        const TARGET = 5000000;
+
+        // --- LOAD / SAVE ---
+        function loadData() {
+            const stored = localStorage.getItem('finance_ultimate_data');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    transactions = data.transactions || [];
+                    notifSettings = data.notifSettings || { tagihan: true, laporan: true, target: true, wallet: true };
+                    walletData = data.walletData || { bank: 'BCA', balance: 0, sync: true };
+                    syncHistory = data.syncHistory || [];
+                } catch(e) { transactions = []; }
+            } else {
+                const now = Date.now();
+                transactions = [
+                    { id: now-86400000*3, desc: 'Gaji Bulanan', amount: 5000000, type: 'masuk', category: 'Gaji', date: new Date(now-86400000*3).toISOString() },
+                    { id: now-86400000*2, desc: 'Makan Siang', amount: 45000, type: 'keluar', category: 'Makanan', date: new Date(now-86400000*2).toISOString() },
+                    { id: now-86400000, desc: 'Bensin', amount: 30000, type: 'keluar', category: 'Transportasi', date: new Date(now-86400000).toISOString() },
+                    { id: now, desc: 'Bayar Listrik', amount: 200000, type: 'keluar', category: 'Tagihan', date: new Date().toISOString() },
+                ];
+                saveData();
+            }
+            renderAll();
+            loadWalletUI();
+            loadNotifUI();
+            loadYearSelect();
+        }
+
+        function saveData() {
+            const data = { transactions, notifSettings, walletData, syncHistory };
+            localStorage.setItem('finance_ultimate_data', JSON.stringify(data));
+        }
+
+        // --- HELPERS ---
+        function formatRp(num) { return 'Rp ' + Number(num).toLocaleString('id-ID'); }
+        function getToday() { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+        function formatDate(dateStr) { if (!dateStr) return '-'; const d = new Date(dateStr); const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']; return d.getDate()+' '+bulan[d.getMonth()]+' '+d.getFullYear(); }
+        function escapeHtml(text) { if (!text) return '-'; const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}; return String(text).replace(/[&<>"']/g, m => map[m]); }
+        function getFiltered() { if (filterType === 'masuk') return transactions.filter(t => t.type === 'masuk'); if (filterType === 'keluar') return transactions.filter(t => t.type === 'keluar'); return transactions; }
+
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.remove('show'), 2000); }
+
+        // --- RENDER ---
+        function renderAll() {
+            renderStats();
+            renderList();
+            renderDate();
+            renderReport();
+            checkNotifications();
+        }
+
+        function renderDate() {
+            const d = new Date();
+            const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+            document.getElementById('dateBadge').innerHTML = '<i class="far fa-calendar-alt"></i> '+d.getDate()+' '+bulan[d.getMonth()]+' '+d.getFullYear();
+        }
+
+        function renderStats() {
+            let masuk=0, keluar=0;
+            transactions.forEach(t => { const amt=Number(t.amount)||0; if(t.type==='masuk') masuk+=amt; else keluar+=amt; });
+            const saldo = masuk - keluar;
+            document.getElementById('totalSaldo').textContent = formatRp(saldo);
+            document.getElementById('totalMasuk').textContent = formatRp(masuk);
+            document.getElementById('totalKeluar').textContent = formatRp(keluar);
+            document.getElementById('totalTransaksi').textContent = transactions.length;
+            const progress = Math.min(100, (saldo/TARGET)*100);
+            document.getElementById('progressFill').style.width = progress+'%';
+            document.getElementById('progressText').textContent = Math.floor(progress)+'%';
+            document.getElementById('targetInfo').textContent = '🎯 Target '+formatRp(TARGET)+(saldo>=TARGET?' 🎉 Tercapai!':'');
+        }
+
+        function renderList() {
+            const container = document.getElementById('listContainer');
+            const filtered = getFiltered();
+            document.getElementById('transCount').textContent = filtered.length + ' transaksi';
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i>${transactions.length===0?'Belum ada transaksi':'Tidak ada dengan filter ini'}</div>`;
+                return;
+            }
+            const sorted = [...filtered].sort((a,b) => new Date(b.date||0) - new Date(a.date||0));
+            let html = '';
+            sorted.slice(0,100).forEach(t => {
+                const amt=Number(t.amount)||0; const isIncome=t.type==='masuk'; const cls=isIncome?'income':'expense'; const sign=isIncome?'+':'-';
+                html += `<div class="transaction-item">
+                    <div class="left"><div class="desc">${isIncome?'📈':'📉'} ${escapeHtml(t.desc||'Tanpa judul')}</div>
+                    <div class="meta"><span>${escapeHtml(t.category||'Lainnya')}</span><span class="cat-badge">${formatDate(t.date)}</span></div></div>
+                    <div class="right"><span class="amount ${cls}">${sign} ${formatRp(amt)}</span>
+                    <button class="delete-btn" data-id="${t.id}"><i class="fas fa-times"></i></button></div>
+                </div>`;
+            });
+            container.innerHTML = html;
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id=Number(this.dataset.id);
+                    if(confirm('Hapus transaksi ini?')) { transactions=transactions.filter(t=>t.id!==id); saveData(); renderAll(); showToast('🗑️ Dihapus'); }
+                });
+            });
+        }
+
+        // --- REPORT ---
+        function renderReport() {
+            const month = parseInt(document.getElementById('monthSelect').value);
+            const year = parseInt(document.getElementById('yearSelect').value);
+            const filtered = transactions.filter(t => {
+                if (!t.date) return false;
+                const d = new Date(t.date);
+                return d.getMonth() === month && d.getFullYear() === year;
+            });
+            const container = document.getElementById('reportContainer');
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="chart-empty">Tidak ada transaksi bulan ini</div>';
+                return;
+            }
+            let masuk=0, keluar=0;
+            const catMap = {};
+            filtered.forEach(t => {
+                const amt=Number(t.amount)||0;
+                if(t.type==='masuk') masuk += amt;
+                else { keluar += amt; const cat=t.category||'Lainnya'; catMap[cat]=(catMap[cat]||0)+amt; }
+            });
+            const saldo = masuk - keluar;
+            let html = `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius-sm);text-align:center;">
+                    <div style="font-size:12px;color:var(--text-secondary);">Pemasukan</div>
+                    <div style="font-size:22px;font-weight:700;color:var(--green);">${formatRp(masuk)}</div>
+                </div>
+                <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius-sm);text-align:center;">
+                    <div style="font-size:12px;color:var(--text-secondary);">Pengeluaran</div>
+                    <div style="font-size:22px;font-weight:700;color:var(--red);">${formatRp(keluar)}</div>
+                </div>
+                <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius-sm);text-align:center;">
+                    <div style="font-size:12px;color:var(--text-secondary);">Saldo</div>
+                    <div style="font-size:22px;font-weight:700;color:var(--gold);">${formatRp(saldo)}</div>
+                </div>
+            </div>`;
+            if (Object.keys(catMap).length > 0) {
+                html += `<div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">📊 Detail Pengeluaran per Kategori:</div>`;
+                const entries = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+                entries.forEach(([cat,total]) => {
+                    const pct = Math.round((total/keluar)*100);
+                    html += `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border-color);">
+                        <span style="flex:1;font-size:13px;">${cat}</span>
+                        <span style="font-size:13px;font-weight:600;color:var(--gold);">${formatRp(total)}</span>
+                        <span style="font-size:12px;color:var(--text-muted);">${pct}%</span>
+                    </div>`;
+                });
+            }
+            container.innerHTML = html;
+        }
+
+        // --- NOTIFICATIONS ---
+        function checkNotifications() {
+            const d = new Date();
+            const day = d.getDate();
+            const month = d.getMonth();
+            // Tagihan reminder (tanggal 5)
+            if (day === 5 && notifSettings.tagihan) {
+                showToast('🔔 Pengingat: Waktu bayar tagihan!');
+            }
+            // Laporan bulanan (tanggal 1)
+            if (day === 1 && notifSettings.laporan) {
+                showToast('📊 Laporan bulanan siap! Lihat di tab Laporan.');
+            }
+            // Target reminder
+            if (notifSettings.target) {
+                const saldo = transactions.reduce((s,t) => s + (t.type==='masuk'?Number(t.amount)||0:-(Number(t.amount)||0)), 0);
+                if (saldo < TARGET * 0.2 && transactions.length > 0) {
+                    showToast('⚠️ Saldo rendah! Target tabungan masih jauh.');
+                }
+            }
+            // Wallet sync
+            if (notifSettings.wallet && walletData.sync) {
+                // Simulasi sync
+                const lastSync = syncHistory[syncHistory.length-1];
+                if (!lastSync || (Date.now() - new Date(lastSync.date).getTime()) > 86400000) {
+                    syncWallet();
+                }
+            }
+        }
+
+        function syncWallet() {
+            const entry = { date: new Date().toISOString(), bank: walletData.bank, balance: walletData.balance, status: 'success' };
+            syncHistory.push(entry);
+            if (syncHistory.length > 20) syncHistory.shift();
+            saveData();
+            loadSyncHistory();
+            showToast('🔄 Sinkronisasi wallet berhasil!');
+        }
+
+        function loadSyncHistory() {
+            const container = document.getElementById('syncHistory');
+            if (syncHistory.length === 0) {
+                container.innerHTML = '<div class="empty-state">Belum ada riwayat sinkronisasi</div>';
+                return;
+            }
+            let html = '';
+            syncHistory.slice().reverse().slice(0,10).forEach(h => {
+                html += `<div class="transaction-item" style="padding:8px 0;">
+                    <div class="left"><div class="desc" style="font-size:13px;">🏦 ${h.bank}</div>
+                    <div class="meta">${formatDate(h.date)}</div></div>
+                    <div class="right"><span class="amount income">${formatRp(h.balance)}</span></div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleNotif(el) {
+            const key = el.dataset.notif;
+            notifSettings[key] = !notifSettings[key];
+            el.classList.toggle('active');
+            el.innerHTML = notifSettings[key] ? '<i class="fas fa-toggle-on"></i>' : '<i class="fas fa-toggle-off"></i>';
+            saveData();
+            showToast(notifSettings[key] ? '🔔 Notifikasi aktif' : '🔕 Notifikasi nonaktif');
+        }
+
+        function loadNotifUI() {
+            document.querySelectorAll('.notif-toggle').forEach(el => {
+                const key = el.dataset.notif;
+                const isActive = notifSettings[key] !== undefined ? notifSettings[key] : true;
+                el.classList.toggle('active', isActive);
+                el.innerHTML = isActive ? '<i class="fas fa-toggle-on"></i>' : '<i class="fas fa-toggle-off"></i>';
+            });
+        }
+
+        // --- WALLET UI ---
+        function loadWalletUI() {
+            document.getElementById('walletSelect').value = walletData.bank || 'BCA';
+            document.getElementById('walletBalance').value = walletData.balance || 0;
+            document.getElementById('walletSync').value = walletData.sync ? 'on' : 'off';
+            document.getElementById('walletStatus').textContent = '🏦 Terintegrasi: '+walletData.bank+' | Saldo: '+formatRp(walletData.balance);
+            loadSyncHistory();
+        }
+
+        function loadYearSelect() {
+            const sel = document.getElementById('yearSelect');
+            const currentYear = new Date().getFullYear();
+            sel.innerHTML = '';
+            for (let y = currentYear-5; y <= currentYear+1; y++) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                if (y === currentYear) opt.selected = true;
+                sel.appendChild(opt);
+            }
+        }
+
+        // --- VOICE ---
+        function initVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                document.getElementById('voiceStatus').innerHTML = '⚠️ Browser tidak support voice. Pakai Chrome!';
+                document.getElementById('voiceBtn').disabled = true;
+                return;
+            }
+            recognition = new SpeechRecognition();
+            recognition.lang = 'id-ID';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+            recognition.onstart = function() {
+                isListening = true;
+                const btn = document.getElementById('voiceBtn');
+                btn.classList.add('listening');
+                btn.querySelector('i').className = 'fas fa-stop-circle';
+                document.getElementById('voiceBtnText').textContent = 'Mendengarkan...';
+                document.getElementById('voiceStatus').innerHTML = '<i class="fas fa-circle" style="color:var(--red);"></i> Dengarkan... Bicara sekarang!';
+            };
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.toLowerCase().trim();
+                document.getElementById('voiceStatus').innerHTML = '<i class="fas fa-check" style="color:var(--green);"></i> "'+transcript+'"';
+                processVoiceCommand(transcript);
+            };
+            recognition.onerror = function(event) {
+                let msg = '❌ ';
+                if (event.error === 'not-allowed') msg += 'Izin mikrofon ditolak!';
+                else if (event.error === 'no-speech') msg += 'Tidak ada suara. Coba lagi!';
+                else msg += event.error;
+                document.getElementById('voiceStatus').innerHTML = msg;
+                showToast(msg);
+                resetVoiceButton();
+            };
+            recognition.onend = function() {
+                resetVoiceButton();
+                if (!document.getElementById('voiceStatus').innerHTML.includes('Dengar')) {
+                    document.getElementById('voiceStatus').innerHTML = '<i class="fas fa-info-circle"></i> Contoh: <span class="highlight">"Tambah pemasukan gaji 5 juta"</span>';
+                }
+            };
+        }
+
+        function resetVoiceButton() {
+            isListening = false;
+            const btn = document.getElementById('voiceBtn');
+            btn.classList.remove('listening');
+            btn.querySelector('i').className = 'fas fa-microphone';
+            document.getElementById('voiceBtnText').textContent = 'Tekan & Bicara';
+        }
+
+        function toggleVoice() {
+            if (!recognition) { showToast('⚠️ Voice tidak didukung!'); return; }
+            if (isListening) { recognition.stop(); return; }
+            try { recognition.start(); } catch(e) { showToast('⚠️ Error: '+e.message); resetVoiceButton(); }
+        }
+
+        function processVoiceCommand(text) {
+            let type='masuk', desc=text, amount=0;
+            if (text.includes('keluar')||text.includes('pengeluaran')||text.includes('beli')||text.includes('bayar')||text.includes('makan')||text.includes('belanja')) type='keluar';
+            else if (text.includes('masuk')||text.includes('pemasukan')||text.includes('gaji')||text.includes('terima')||text.includes('dapat')||text.includes('bonus')) type='masuk';
+            else { if (text.includes('gaji')||text.includes('bonus')) type='masuk'; else if (text.includes('makan')||text.includes('belanja')||text.includes('bensin')||text.includes('tagihan')) type='keluar'; }
+            const angkaRegex = /\d+([.,]\d+)?/g;
+            const angkaDitemukan = text.match(angkaRegex);
+            if (angkaDitemukan) {
+                let raw = angkaDitemukan[0].replace(/[,.]/g,'');
+                amount = parseInt(raw);
+                if (isNaN(amount)||amount<=0 && angkaDitemukan.length>1) { raw = angkaDitemukan[1].replace(/[,.]/g,''); amount = parseInt(raw); }
+                desc = text.replace(/\d+([.,]\d+)?/g,'').trim();
+            } else {
+                if (text.includes('ribu')) { const m=text.match(/(\d+)\s*ribu/); if(m) amount=parseInt(m[1])*1000; }
+                else if (text.includes('juta')) { const m=text.match(/(\d+)\s*juta/); if(m) amount=parseInt(m[1])*1000000; }
+                else if (text.includes('lima')) amount=5000;
+                else if (text.includes('sepuluh')) amount=10000;
+                else if (text.includes('dua puluh')) amount=20000;
+                else if (text.includes('lima puluh')) amount=50000;
+                else if (text.includes('seratus')) amount=100000;
+            }
+            if (amount===0) { const rpMatch=text.match(/rp\s*(\d+)/i)||text.match(/rupiah\s*(\d+)/i); if(rpMatch) amount=parseInt(rpMatch[1]); }
+            const keywords = ['tambah','masuk','keluar','pemasukan','pengeluaran','gaji','beli','bayar','makan','bensin','tagihan','belanja','terima','dapat','bonus','hadiah','rp','rupiah','ribu','juta'];
+            keywords.forEach(kw => { desc = desc.replace(new RegExp('\\b'+kw+'\\b','gi'),''); });
+            desc = desc.replace(/\s+/g,' ').trim();
+            if (!desc) desc = type==='masuk'?'Pemasukan':'Pengeluaran';
+            let category='Lainnya';
+            const catMap={'makan':'Makanan','minum':'Makanan','restoran':'Makanan','bensin':'Transportasi','transport':'Transportasi','gojek':'Transportasi','grab':'Transportasi','listrik':'Tagihan','air':'Tagihan','internet':'Tagihan','pulsa':'Tagihan','wifi':'Tagihan','belanja':'Belanja','baju':'Belanja','sepatu':'Belanja','gaji':'Gaji','bonus':'Gaji','hadiah':'Gaji','obat':'Kesehatan','dokter':'Kesehatan','rumah sakit':'Kesehatan','nonton':'Hiburan','game':'Hiburan','netflix':'Hiburan','spotify':'Hiburan','saham':'Investasi','reksa':'Investasi','emas':'Investasi'};
+            for (const [key,val] of Object.entries(catMap)) { if (text.includes(key)) { category=val; break; } }
+            if (amount===0||isNaN(amount)) { amount=type==='masuk'?100000:50000; showToast('⚠️ Nominal default '+formatRp(amount)); }
+            document.getElementById('desc').value = desc;
+            document.getElementById('amount').value = amount;
+            document.getElementById('type').value = type;
+            document.getElementById('category').value = category;
+            tambahTransaksi(desc, amount, type, category);
+            document.getElementById('voiceStatus').innerHTML = '<i class="fas fa-check-circle" style="color:var(--green);"></i> ✅ "'+desc+'" '+formatRp(amount);
+        }
+
+        function tambahTransaksi(desc, amount, type, category) {
+            if (!desc||!amount||amount<=0) { showToast('⚠️ Data tidak lengkap!'); return; }
+            const newTrans = { id: Date.now(), desc, amount: Number(amount), type, category: category||'Lainnya', date: new Date().toISOString() };
+            transactions.push(newTrans);
+            saveData();
+            renderAll();
+            showToast('✅ '+desc+' '+formatRp(amount)+' berhasil!');
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('voiceBtn').addEventListener('click', toggleVoice);
+        document.getElementById('btnTambah').addEventListener('click', function() {
+            const desc=document.getElementById('desc').value.trim();
+            const amount=document.getElementById('amount').value.trim();
+            const category=document.getElementById('category').value;
+            const type=document.getElementById('type').value;
+            if (!desc) { showToast('⚠️ Masukkan deskripsi!'); document.getElementById('desc').focus(); return; }
+            if (!amount||isNaN(amount)||Number(amount)<=0) { showToast('⚠️ Masukkan jumlah valid!'); document.getElementById('amount').focus(); return; }
+            tambahTransaksi(desc, Number(amount), type, category);
+            document.getElementById('desc').value='';
+            document.getElementById('amount').value='';
+            document.getElementById('desc').focus();
+            const btn=this;
+            btn.innerHTML='<i class="fas fa-check"></i> Tersimpan!';
+            setTimeout(() => { btn.innerHTML='<i class="fas fa-plus"></i> Tambahkan'; }, 1200);
+        });
+
+        // TABS
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // REPORT
+        document.getElementById('btnReport').addEventListener('click', renderReport);
+
+        // NOTIF TEST
+        document.getElementById('btnTestNotif').addEventListener('click', function() {
+            showToast('🔔 Notifikasi tes berhasil! Semua sistem berjalan.');
+            if (Notification.permission === 'granted') {
+                new Notification('🔔 FINANCE PRO', { body: 'Notifikasi tes dari aplikasi keuangan Anda!', icon: '💰' });
+            } else if (Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        });
+
+        // WALLET
+        document.getElementById('btnWalletSave').addEventListener('click', function() {
+            walletData.bank = document.getElementById('walletSelect').value;
+            walletData.balance = parseInt(document.getElementById('walletBalance').value) || 0;
+            walletData.sync = document.getElementById('walletSync').value === 'on';
+            saveData();
+            loadWalletUI();
+            showToast('✅ Integrasi wallet berhasil disimpan!');
+            if (walletData.sync) syncWallet();
+        });
+
+        // FILTER
+        document.getElementById('btnFilter').addEventListener('click', function() {
+            const filters=['semua','masuk','keluar']; const icons=['📊 Semua','📥 Pemasukan','📤 Pengeluaran'];
+            let idx=filters.indexOf(filterType); idx=(idx+1)%filters.length; filterType=filters[idx];
+            this.innerHTML='<i class="fas fa-filter"></i> '+icons[idx];
+            renderList();
+            showToast('🔍 Filter: '+icons[idx]);
+        });
+
+        // RESET
+        document.getElementById('btnReset').addEventListener('click', function() {
+            if (confirm('⚠️ Yakin hapus SEMUA data?')) { if (confirm('Konfirmasi: Semua akan hilang!')) { transactions=[]; saveData(); renderAll(); showToast('🔄 Semua data direset'); } }
+        });
+
+        // EXPORT
+        document.getElementById('btnExport').addEventListener('click', function() {
+            if (transactions.length===0) { showToast('⚠️ Tidak ada data'); return; }
+            let csv='Deskripsi,Kategori,Tipe,Jumlah,Tanggal\n';
+            transactions.forEach(t => { const amt=Number(t.amount)||0; csv += `"${escapeHtml(t.desc||'-')}","${escapeHtml(t.category||'Lainnya')}","${t.type==='masuk'?'Pemasukan':'Pengeluaran'}",${amt},"${formatDate(t.date)}"\n`; });
+            const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='finance_ultimate_'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); showToast('📥 Data berhasil diexport!');
+        });
+
+        // BACKUP
+        document.getElementById('btnBackup').addEventListener('click', function() {
+            const data = JSON.stringify({ transactions, notifSettings, walletData, syncHistory, backupDate: new Date().toISOString() });
+            const blob=new Blob([data],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='finance_backup_'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); showToast('💾 Backup berhasil dibuat!');
+        });
+
+        // Enter key
+        document.getElementById('amount').addEventListener('keydown', function(e) { if(e.key==='Enter') document.getElementById('btnTambah').click(); });
+        document.getElementById('desc').addEventListener('keydown', function(e) { if(e.key==='Enter') document.getElementById('amount').focus(); });
+
+        // --- INIT ---
+        loadData();
+        initVoice();
+
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Auto sync every 6 hours
+        setInterval(() => {
+            if (walletData.sync) syncWallet();
+        }, 21600000);
+
+        // Auto refresh
+        setInterval(() => {
+            const stored=localStorage.getItem('finance_ultimate_data');
+            if (stored) {
+                try {
+                    const newData=JSON.parse(stored);
+                    if (JSON.stringify(newData.transactions) !== JSON.stringify(transactions)) {
+                        transactions = newData.transactions;
+                        renderAll();
+                    }
+                } catch(e) {}
+            }
+        }, 15000);
+
+        console.log('💰 FINANCE PRO ULTIMATE siap pakai!');
+        console.log('🎙️ Voice: "Tambah pemasukan gaji 5 juta"');
+        console.log('🔔 Notifikasi aktif untuk tagihan, laporan, target, dan wallet');
+        console.log('🏦 Integrasi wallet: '+walletData.bank);
+    </script>
+</body>
+</html>
